@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciador de Vídeos</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+        background-color: #f4f4f4;
+      }
+      #app {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      input,
+      button {
+        margin: 5px;
+        padding: 10px;
+        width: 90%;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Gerenciador de Vídeos</h1>
+
+      <div id="auth">
+        <h2>Cadastro</h2>
+        <input type="text" id="name" placeholder="Nome" />
+        <input type="email" id="email" placeholder="E-mail" />
+        <input type="password" id="password" placeholder="Senha" />
+        <button onclick="signUp()">Cadastrar</button>
+
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="E-mail" />
+        <input type="password" id="loginPassword" placeholder="Senha" />
+        <button onclick="login()">Entrar</button>
+      </div>
+
+      <div id="videoManager" style="display: none">
+        <h2>Adicionar Vídeo</h2>
+        <input type="text" id="videoTitle" placeholder="Título do Vídeo" />
+        <input type="text" id="videoDescription" placeholder="Descrição" />
+        <button onclick="createVideo()">Criar Vídeo</button>
+
+        <h2>Meus Vídeos</h2>
+        <button onclick="getVideos()">Carregar Vídeos</button>
+        <ul id="videoList"></ul>
+
+        <h2>Buscar Vídeos</h2>
+        <input type="text" id="searchQuery" placeholder="Pesquisar" />
+        <button onclick="searchVideos()">Buscar</button>
+        <ul id="searchResults"></ul>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "http://localhost:3001"; // Alterado para evitar conflito de portas
+
+      let token = "";
+
+      async function signUp() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const res = await fetch(`${API_URL}/user/sign-up`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        });
+        alert("Usuário cadastrado!");
+      }
+
+      async function login() {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+        const res = await fetch(`${API_URL}/user/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        token = data.token;
+        document.getElementById("auth").style.display = "none";
+        document.getElementById("videoManager").style.display = "block";
+      }
+
+      async function createVideo() {
+        const title = document.getElementById("videoTitle").value;
+        const description = document.getElementById("videoDescription").value;
+        await fetch(`${API_URL}/video/create-video`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: token },
+          body: JSON.stringify({ title, description }),
+        });
+        alert("Vídeo criado!");
+      }
+
+      async function getVideos() {
+        const res = await fetch(`${API_URL}/video/get-videos`, {
+          method: "GET",
+          headers: { Authorization: token },
+        });
+        const data = await res.json();
+        const videoList = document.getElementById("videoList");
+        videoList.innerHTML = "";
+        data.videos.forEach((video) => {
+          const li = document.createElement("li");
+          li.textContent = `${video.title} - ${video.description}`;
+          videoList.appendChild(li);
+        });
+      }
+
+      async function searchVideos() {
+        const search = document.getElementById("searchQuery").value;
+        const res = await fetch(
+          `${API_URL}/video/search-videos?search=${search}`
+        );
+        const data = await res.json();
+        const searchResults = document.getElementById("searchResults");
+        searchResults.innerHTML = "";
+        data.videos.forEach((video) => {
+          const li = document.createElement("li");
+          li.textContent = `${video.title} - ${video.description}`;
+          searchResults.appendChild(li);
+        });
+      }
+    </script>
+  </body>
+</html>

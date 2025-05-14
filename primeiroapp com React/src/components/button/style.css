@@ -1,0 +1,19 @@
+/* Classe para botões habilitados */
+.button {
+  width: 100px; /* Largura do botão */
+  height: 50px; /* Altura do botão */
+  align-items: center; /* Centraliza itens (não é aplicável diretamente a botões em CSS puro) */
+  background-color: rgb(255, 247, 0); /* Cor de fundo amarela */
+  border: none; /* Remove a borda padrão do botão */
+  border-radius: 8px; /* Deixa os cantos do botão arredondados */
+}
+
+/* Classe para botões desabilitados */
+.disabladButton {
+  width: 100px; /* Largura do botão */
+  height: 50px; /* Altura do botão */
+  align-items: center; /* Centraliza itens (não é aplicável diretamente a botões em CSS puro) */
+  background-color: rgb(255, 0, 0); /* Cor de fundo vermelha */
+  border: none; /* Remove a borda padrão do botão */
+  border-radius: 8px; /* Deixa os cantos do botão arredondados */
+}

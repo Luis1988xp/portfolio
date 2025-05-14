@@ -1,0 +1,27 @@
+/* Estilo para o cabeçalho */
+.header {
+  width: 100%; /* Largura total da página */
+  height: 100px; /* Altura fixa */
+  background-color: aqua; /* Cor de fundo */
+  display: flex; /* Ativa o modelo flexbox */
+  justify-content: space-between; /* Espaçamento igual entre os itens */
+  align-items: center; /* Centraliza verticalmente os itens */
+  padding: 0 20px; /* Adiciona espaçamento interno nas laterais */
+}
+
+/* Estilo para a lista não ordenada */
+ul {
+  display: flex; /* Ativa o modelo flexbox */
+  justify-content: space-between; /* Espaçamento igual entre os itens */
+  align-items: center; /* Centraliza verticalmente os itens */
+  width: 100%; /* Ocupa toda a largura do container */
+  margin: 0; /* Remove margens externas */
+  padding: 0; /* Remove o padding padrão */
+  list-style: none; /* Remove os marcadores padrão */
+}
+
+/* Estilo para os itens da lista */
+li {
+  margin: 0 10px; /* Adiciona espaçamento horizontal entre os itens */
+  list-style: none; /* Garante que os marcadores estejam desativados */
+}
